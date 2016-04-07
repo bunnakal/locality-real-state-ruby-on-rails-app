@@ -1,0 +1,38 @@
+<!-- view_properties.html.erb -->
+<div id="wrapper">
+	<section class="container">
+	<input style="width:500px; height:35px;margin:20px auto;" type="search" class="light-table-filter" data-table="order-table" placeholder="Search property..." />
+
+	<table class="order-table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Property title</th>
+				<th>Published date</th>
+				<th colspan="3">Action</th>
+				</tr>
+		</thead>
+		<tbody>
+		<% i=1 %>
+		<% if ! @v_properties.nil? %>
+			<% @v_properties.each do |property| %>
+			<tr>
+				<td><%= i %></td>
+				<td><%= property.title %></td>
+				<td><%= property.created_at %></td>
+				<td><%= link_to "View", property_path(property), 
+	                  class: 'button' %></td>
+				<td><%= link_to "Edit", edit_property_path(property),
+	                  class: 'button' %></td>
+				<td><%= link_to 'Delete', property, 
+	                  class: 'button_delete',
+	                  method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			</tr>
+			<% i=i+1 %>
+			<% end %>	
+		<% end %>
+		</tbody>
+	</table>
+</section>
+</div>
+

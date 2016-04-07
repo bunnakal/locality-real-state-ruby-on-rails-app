@@ -1,0 +1,111 @@
+<div id="wrapper">
+  <% if notice %>
+  <div class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Well done!</strong> <%= notice %>
+   </div>
+  <% end %>
+	<section class="view">
+		<div class="title">
+			<h1><%= @property.title %></h1>
+		</div>
+    <div id='ninja-slider'>
+        <div>
+            <div class="slider-inner">
+                <ul>
+                  <%= @galleries.each do | gallery| %>
+                    <li><%= image_tag(gallery.image_gallery, class:"ns-img") %></li>
+                  <% end %>
+                </ul>
+                <div class="fs-icon" title="Expand/Close"></div>
+            </div>
+            <div id="thumbnail-slider">
+                <div class="inner">
+                    <ul>
+                        <%= @galleries.each do |gallery| %>
+                        <li>
+                        	<%= image_tag(gallery.image_gallery, class:"thumb") %>
+                            <span><%= gallery.description %></span>
+                        </li>
+                        <% end %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="property_info">
+      <h2>Description</h2>
+    	<hr/>
+    	<p>
+        <%= @property.description %>
+    	</p>
+    	<h2>Spec</h2>
+    	<hr/>
+    	<p>
+        <%= @property.spec %> sqm
+    	</p>
+    	<h2>Beds</h2>
+    	<hr/>
+    	<p>
+    		<%= @property.beds %> beds
+    	</p>
+      <h2>Bathrrooms</h2>
+      <hr/>
+      <p>
+        <%= @property.baths %> rooms
+      </p>
+    	<h2>Price</h2>
+    	<hr/>
+    	<p>
+    		<%= number_to_currency(@property.price) %>
+    	</p>
+      <h2>City/Province</h2>
+      <hr/>
+      <p>
+        <%= @property.state %>
+      </p>
+      <h2>Sang Kat/District</h2>
+      <hr/>
+      <p>
+        <%= @property.district %>
+      </p>
+    	<h2>Address</h2>
+      <hr/>
+      <p>
+        <%= @property.address %>
+      </p>
+      <h2>Map</h2>
+      <hr/>
+    	<div id="maps">
+        <%= image_tag "http://maps.google.com/maps/api/staticmap?size=450x300&sensor=false&zoom=16&markers=#{@property.latitude}%2C#{@property.longitude}", class: 'maps' %>
+    	</div>
+        <h2>Contact person </h2>
+        <hr/>
+    	<div class="contact">
+    		<ul>
+          <li><b>Name:&nbsp;</b><%= @property.user.name %></li>
+          <li><b>Phone:&nbsp;</b><%= @property.user.phone %></li>
+          <li><b>Email:&nbsp;</b><%= @property.user.email %></li>
+          <li><b>Role:&nbsp;</b><%= @property.user.role %></li>
+        </ul>
+    	</div>
+    </div>
+    <% if user_signed_in? and @property.user_id == current_user.id %>
+      <hr/>
+      <%= link_to "Edit", edit_property_path(@property), class: 'button_edit' %>
+      <%= link_to "Cancel", root_path, class: 'button_cancel' %> 
+      <script type="text/javascript">
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat:"#{@property.latitude}", lng:"#{@property.longitude}" },
+          zoom: 8
+        });
+      }
+      </script>   
+    <% end %>
+	</section>
+</div>
+
+
+

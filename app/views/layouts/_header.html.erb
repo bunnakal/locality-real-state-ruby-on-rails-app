@@ -1,0 +1,34 @@
+<nav>
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href='<%= root_path %>' >Locality Real Estate</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><%= link_to "Home", root_path %></li>
+        <% if user_signed_in? %>
+        <li><%= link_to "Publish Property", new_user_property_path(current_user) %></li>
+        <li><%= link_to "View Property", view_path %></li>    
+        <% end %>
+        <li><%= link_to "About", about_path %></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <% if user_signed_in? %>
+        <li><%= link_to 'Edit account', edit_user_registration_path %></li>
+        <li style="margin-right:50px;"><%= link_to 'Sign out', destroy_user_session_path, :method=>'delete' %></li>
+        <li><%= image_tag(current_user.avatar.url, class: 'avatar') %></li>
+      <% else %>
+        <li><%= link_to ' Sign up', new_user_registration_path %></li>
+        <li><%= link_to ' Sign in', new_user_session_path %></li>
+      <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</nav>

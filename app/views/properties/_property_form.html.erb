@@ -1,0 +1,60 @@
+<!-- property_form.html.erb -->
+<div class="form-style-10">
+<h1>Propery information!</h1>
+<%= form_for(@property, html: { multipart: true }) do |f| %>
+  <%= render 'shared/error_message', object: @property %>
+  <div class="section"><span>1</span>Property information</div>
+  <div class="inner-wrap">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+    <%= f.label :description %>
+    <%= f.text_area :description, cols: 63, rows: 7 %>
+    <%= f.label :status %>
+    <%= f.select :status, Property::STATUS, prompt: "[--Select one--]" %>
+    <%= f.label :price %>
+    <%= f.text_field :price %>
+    <%= f.label :Type %>
+    <%= f.select :type_id,Type.all.order('property_type').map { |t| [t.property_type,t.id] } ,prompt:"[--Select one--]" %>
+  </div>
+  <div class="section"><span>2</span>Specification information</div>
+  <div class="inner-wrap">
+    <%= f.label :'Specification' %>
+    <%= f.text_field :spec %>
+    <%= f.label :beds %>
+    <%= f.text_field :beds %>
+    <%= f.label :baths %>
+    <%= f.text_field :baths %>
+  </div>
+  <div class="section"><span>3</span>Location</div>
+  <div class="inner-wrap">
+    <%= f.label :'City/Province' %>
+    <%= f.select :state, Property::LOCATION.keys, prompt: "[--Select one--]" %>
+    <%= f.label :'Sangkat/District' %>
+    <%= f.select :district, Property::LOCATION['Phnom Penh'], prompt: "[--Select one--]" %>
+    <%= f.label :address %>
+    <%= f.text_field :address, id: 'autocomplete', onFocus: 'geolocate();' %>
+  </div>
+  <div class="section"><span>4</span>Image file</div>
+  <div class="inner-wrap">
+    <%= f.label :'Image file(cover)' %>
+    <%= f.file_field :image %>
+    <%= f.fields_for :property_galleries do |p| %>
+    <div class="field">
+      <%= p.label :'Gallery image file' %>
+      <%= p.file_field :image_gallery, :multiple => true, name: "property_galleries[image_gallery][]" %>
+    </div>
+   <% end %>
+  </div>
+  <hr/>
+  <div class="button-section">
+    <%= f.submit %>
+    <%= link_to 'Cancel', root_path, class: 'button_cancel' %>
+  </div>
+<% end %>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function () {
+    initialize(); 
+  });
+</script>
+

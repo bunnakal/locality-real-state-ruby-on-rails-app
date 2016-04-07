@@ -1,0 +1,124 @@
+<div id="wrapper">
+	<% if notice %>
+	<div class="alert alert-success alert-dismissible" role="alert">
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  <strong>Well done!</strong> <%= notice %>
+	 </div>
+	<% end %>
+	<div id="slider-wrapper">
+		<div class="slider">
+			<div id="sliderFrame">
+        <div id="slider">
+            <%= image_tag('image-slider-1.jpg', alt: 'Building 1') %>
+            <%= image_tag('image-slider-2.jpg', alt: 'Building 2') %>
+            <%= image_tag('image-slider-3.jpg', alt: 'Building 3') %>
+            <%= image_tag('image-slider-4.jpg', alt: 'Building 4') %>
+            <%= image_tag('image-slider-5.jpg', alt: 'Building 5') %>
+        </div>
+    	</div>		
+		</div>
+		<div class="search">
+			<%= form_tag index_path, method: :post do %>
+				<h3>Property Search</h3>
+				<hr/>
+				<%= label_tag :Status %>
+				<div class="select-style">
+			  	<%= select_tag "status", options_for_select(Property::STATUS), prompt:'[-- Select one --]' %>
+			  </div>
+			  <%= label_tag :Beds %>
+			  <%= text_field_tag :beds,nil, placeholder: '0' %>
+			  <%= label_tag :Baths %>
+			  <%= text_field_tag :baths,nil, placeholder:'0' %>
+				<fieldset>
+	  			<legend>Location:</legend>
+	  				<%= label_tag :'City/Province' %>
+	  				<div class="select-style">
+			  			<%= select_tag :state, options_for_select(Property::LOCATION.keys), onchange: 'defineDistrict();',id:'state', prompt:'[-- Select one --]' %>
+			  		</div>
+						<%= label_tag :'Sangkat/District' %>
+						<div class="select-style">
+			  			<%= select_tag :district, options_for_select(Property::LOCATION['Phnom Penh']), prompt:'[-- Select one --]' %>
+			  		</div>
+	 			</fieldset>
+	 				<label>Price:</label>
+			  	<%= text_field_tag :from , nil, :class =>'from', placeholder: '0.00' %>
+			  	<%= label_tag :To %>
+			  	<%= text_field_tag :to , nil, :class =>'to',placeholder:'0.00' %>
+			  <%= submit_tag 'Search',name:'search', :class => "advance-search-btn" %>
+		  <% end %>
+		</div>
+	</div>
+	<h2>Newest properties</h2>
+	<div id="content-wrapper">
+		<section>
+			<% if @properties.count == 0 %>
+				<h3>No Result</h3>
+			<% end %>
+			<ul class="grid">
+				<% @properties.each do |property| %>
+				<li>
+					<div class="panel">
+						<h4><%= link_to property.title, property_path(property) %></h4>
+						<span style="padding-left:5px;font-size:11px;">On&nbsp;<%= property.created_at %>&nbsp;by&nbsp;<%= property.user.name %></span> 
+						<%= image_tag(property.image, class: "image_home" )%>
+						<ul class="spec">
+							<li><b>Spec:&nbsp;</b><%= property.spec %>Sq</li>
+							<li><b>Beds:&nbsp;&nbsp;</b><%= display_for_bed(property) %></li>
+							<li><b>Baths:&nbsp;&nbsp;</b><%= display_for_bath(property) %></li>	
+						</ul>
+						<p>
+							<%= truncate(property.description, length: 220, separator: ' ') %>
+						</p>
+					</div>
+				</li>
+				<% end %>
+		</ul>
+		<div id="paginate">
+			<h3 class="paginate">
+				<%= will_paginate @properties %>
+			</h3>
+		</div>
+	</section>
+	<aside>
+		<div id="box">
+			<h3 class="aside">Property category</h3>
+			<hr/>
+			<ul class="category">
+				<li><%= link_to "All categories", root_path %></li>
+			<% @types.each do |type| %>
+				<li><%= link_to type.property_type, type_properties_path(type) %></li>	
+			<% end %>
+		</div>
+		<div id="box">
+			<h3 class="aside">Featured property</h3>
+			<hr/>
+			<ul class="f_property">
+				<% @f_properties.each do |f_property| %>
+				<li>
+					<div id="f_panel">
+					<%= image_tag(f_property.image, class: 'f_image') %>
+					<h3 class="f_panel"><%= link_to f_property.title, property_path(f_property) %></h3>
+					<p>
+						<%= truncate(f_property.description, length: 90, separator: ' ') %>
+					</p>
+					</div>
+				</li>
+
+				<% end %>
+			</ul>
+		</div>
+		<div id="box">
+			<h3 class="aside">Contact person</h3>
+			<hr/>
+			<%= image_tag('contact.jpg', class: "contact_image") %>
+			<div id="contact_info">
+				<h4>Darren Jensen</h4>
+				<p><b>Phone:&nbsp;</b>012-222-333</p>
+				<p><b>Email:&nbsp;</b>contact@location3.com</p>
+			</div>
+			<p style="text-align:justify;padding:5px;">In case you want to get in touch with us please feel free to call or email us.</p>
+		</div>
+	</aside>
+</div>
+</div>
+
